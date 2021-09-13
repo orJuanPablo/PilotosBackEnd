@@ -16,8 +16,7 @@ const signToken = (_id) =>
 
 router.post('/registro', (req, res) => 
 {
-    console.log(req.body)
-    const { userName, password } = req.body
+    const { userName, password, name, lastname } = req.body
     crypto.randomBytes(16, (err, salt) => 
     {
         const newSalt = salt.toString('base64')
@@ -34,7 +33,9 @@ router.post('/registro', (req, res) =>
                      {
                          userName,
                          password: encryptedPass,
-                         salt: newSalt
+                         salt: newSalt,
+                         name,
+                         lastName: lastname,
                      })
                        .then(()=>
                      {
@@ -47,16 +48,14 @@ router.post('/registro', (req, res) =>
 
 router.post('/login', (req,res) => 
 {
-    console.log(req.body)
     const {userName, password} = req.body
     Usuarios.findOne({userName}).exec()
      .then(usuario => 
         {
             if(!usuario)
             {
-                return res.send('usuario y/o contraseña incorrectos')
+                return res.send(false)
             }
-            console.log(usuario)
             crypto.pbkdf2(password, usuario.salt, 256, 64, 'sha1', (err, key) => 
             {
                const encryptedPass = key.toString('base64')
@@ -65,13 +64,15 @@ router.post('/login', (req,res) =>
                     const token = signToken(usuario._id)
                     return res.send({ token })
                }
-               res.send('usuario y/o contraseña incorrectos')
+               res.send(false)
             })
         })
 })
 
 router.get('/me', isAuth, (req,res) =>
 {
-    res.send(req.body.usuario)
+    req.usuario.password = ''
+    req.usuario.salt = ''
+    res.send(req.usuario)
 })
 module.exports = router
