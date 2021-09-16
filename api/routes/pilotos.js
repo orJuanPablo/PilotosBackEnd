@@ -1,12 +1,12 @@
 const { Router } = require('express')
-const Pilotos = require('../modelos/Pilotos')
+const Pilotos = require('../models/Pilotos')
 const {isAuth} = require('../auth/index')
 
 
 
 const router = Router()
 
-router.get('/', (req,res) => {
+router.get('/',isAuth,(req,res) => {
     Pilotos.find()
      .exec()
      .then(x => res.status(200).send(x))

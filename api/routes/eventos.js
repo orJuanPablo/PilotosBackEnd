@@ -1,33 +1,33 @@
 const express = require('express')
-const Localidades = require('../modelos/Localidades')
+const Eventos = require('../models/Eventos')
 
 
 
 const router = express.Router()
 
 router.get('/', (req,res) => {
-    Localidades.find()
+    Eventos.find()
      .exec()
      .then(x => res.status(200).send(x))
 })
 
 router.get('/:id', (req,res) => {
-    Localidades.findById(req.params.id)
+    Eventos.findById(req.params.id)
      .exec()
      .then(x => res.status(200).send(x))
 })
 
 router.post('/', (req,res) => {
-    Localidades.create(req.body).then(x => res.status(201).send(x))
+    Eventos.create(req.body).then(x => res.status(201).send(x))
 })
 
 router.put('/:id', (req,res) => {
-    Localidades.findOneAndUpdate(req.params.id, req.body)
+    Eventos.findOneAndUpdate(req.params.id, req.body)
     .then(() => res.sendStatus(204))
 })
 
 router.delete('/:id', (req,res) => {
-    Localidades.findOneAndDelete(req.params.id).exec()
+    Eventos.findOneAndDelete(req.params.id).exec()
     .then(() => res.sendStatus(204))
 })
 module.exports = router

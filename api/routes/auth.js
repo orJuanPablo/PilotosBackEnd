@@ -1,8 +1,8 @@
 const express = require('express')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const Usuarios = require('../modelos/Usuarios')
-const {isAuth} = require('../auth/')
+const Usuarios = require('../models/Usuarios')
+const {isAuth} = require('../auth')
 
 const router = express.Router()
 
