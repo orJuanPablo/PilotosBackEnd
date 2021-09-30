@@ -7,7 +7,7 @@ const Eventos = mongoose.model('Eventos', new Schema(
         prov: { type: Schema.Types.ObjectId, ref: 'Provincia'},
         loc: { type: Schema.Types.ObjectId, ref: 'Localidad'},
         fec: Date,
-        pilotosInsc: [ { type: Schema.Types.ObjectId, ref: 'Pilotos' } ],
+        pilotosInsc: [ { type: Schema.Types.ObjectId, ref: 'Piloto' } ],
         estado: Number
     }))
 

@@ -1,7 +1,9 @@
-const MONGO_URI="mongodb+srv://orJuanPablo-pil:VAWSFmmG%236zbu.%28@riojapilotscluster.ypkix.mongodb.net/RiojaPilotos-DB?retryWrites=true&w=majority"
+//const MONGO_URI="mongodb+srv://orJuanPablo-pil:VAWSFmmG%236zbu.%28@riojapilotscluster.ypkix.mongodb.net/RiojaPilotos-DB?retryWrites=true&w=majority"
 
 const express = require('express')
 const mongoose = require('mongoose')
+const mySQL = require('mysql')
+const myCon = require('express-myconnection')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -16,13 +18,25 @@ const auth = require('./routes/auth')
 
 const app = express()
 /*------ Settings ------*/
-app.set('port', process.env.PORT || 3000)
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
 /*------ Middlewares ------*/ 
+app.use(bodyParser.urlencoded({extended : false}))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(morgan('dev'))
 /*------ Base de Datos ------*/
-mongoose.connect(MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true })
+//mongoose.connect(MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true })
+app.use(myCon(mySQL, 
+    {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        port: 3306,
+        database: 'comid-db',
+        dateStrings: true
+    }, 'single'))
 //----- Rutas ------
 app.use('/api/auth', auth)
 app.use('/api/accidentes', accidentes)
@@ -32,9 +46,24 @@ app.use('/api/localidades', localidades)
 app.use('/api/provincias', provincias)
 app.use('/api/tutores', tutores)
 
-app.listen(3000, () => 
-{
-    console.log(`Server listen on port ${app.get('port')}`)
-})
+ app.listen(app.get('port'), () => 
+ {
+     console.log(`Server listen on port ${app.get('port')}`)
+ })
 
+ function normalizePort(val) {
+    var port = parseInt(val, 10);
+  
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
+  
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+  
+    return false;
+  }
 module.exports = app
