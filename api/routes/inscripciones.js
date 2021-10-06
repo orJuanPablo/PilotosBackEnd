@@ -1,54 +1,59 @@
+const { isAuth } = require("../auth");
 const express = require("express");
-
 const router = express.Router();
 
-router.get('/:id', (req, res) => {
+router.get("/:id", isAuth, (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
     const { id } = req.params;
-    sql = `SELECT   e.evt_fec, 
-                    cet.cet_nombre,
-                    ces.ces_nombre, 
-                    cpr.cpr_nombre,
-                    clo.clo_nombre 
-      FROM eventos e 
-      INNER JOIN cat_evt_tipos as cet ON e.evt_tipo = cet.cet_id
-      INNER JOIN cat_evt_estado as ces ON e.estado = ces.ces_id
-      INNER JOIN cat_provincias as cpr ON e.evt_prov = cpr.cpr_id
-      INNER JOIN cat_localidades as clo ON e.evt_loc = clo.clo_id
-      WHERE evt_id =${id}`;
-    con.query(sql, (errorq, result) => {
-      if (errorq) console.error(errorq);
-      result
-        ? res.json(result)
-        : res.send("No hay resultados");
+    sql = `SELECT   i.*, 
+                    p.pil_nombre,
+                    p.pil_apellido,
+                    p.pil_dni
+      FROM inscripciones i 
+      INNER JOIN pilotos AS p ON i.ins_pil = p.pil_id
+      WHERE i.ins_evt =${id}`;
+    con.query(sql, (errorq, results) => {
+      if (errorq) {
+        console.error(errorq);
+        res.send(400);
+      } else {
+        const inscriptos = [];
+        results?.forEach((piloto) => {
+          const inscripto = {
+            id: piloto["pil_id"],
+            nombre: piloto["pil_nombre"],
+            apellido: piloto["pil_apellido"],
+            dni: piloto["pil_dni"]
+          };
+          inscriptos.push(inscripto);
+        });
+        res.send(inscriptos);
+      }
     });
   });
 });
 
-router.get("/", (req, res) => {
+router.get("/", isAuth, (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
     sql =
       "SELECT * FROM eventos e INNER JOIN cat_evt_tipos as cet ON e.evt_tipo = cet.cet_id";
     con.query(sql, (errorq, results) => {
       if (errorq) console.error(errorq);
-      console.log(results)
-      results 
-        ? res.json(results)
-        : res.sendStatus(204);
+      console.log(results);
+      results ? res.json(results) : res.sendStatus(204);
     });
   });
 });
 
-
-router.post("/", (req, res) => {
+router.post("/", isAuth, (req, res) => {
   req.getConnection((error, con) => {
-    if (error) console.error( error);
-    sql = `INSERT INTO eventos(evt_tipo, evt_fec, evt_prov, evt_loc, estado) 
-            VALUES (${req.body.tipo}, '${req.body.fecha}', ${req.body.prov}, ${req.body.loc}, ${req.body.estado})`;
+    if (error) console.error(error);
+    sql = `INSERT INTO inscripciones(ins_evt, ins_pil, ins_us) 
+            VALUES (${req.body.ins_evt}, '${req.body.ins_pil}', ${req.usuario.id})`;
     con.query(sql, (err, result) => {
-      if (err) console.error( err);
+      if (err) console.error(err);
       res.json(result);
     });
   });
@@ -56,27 +61,27 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   req.getConnection((error, con) => {
-    if (error) console.error( error);
-    const {id} = req.params
-    console.log(req.params)
+    if (error) console.error(error);
+    const { id } = req.params;
+    console.log(req.params);
     sql = `UPDATE eventos SET evt_tipo = ${req.body.tipo}, evt_fec = ${req.body.fecha}, evt_prov = ${req.body.prov}
             evt_loc = ${req.body.loc}, estado = ${req.body.estado} WHERE evt_id = ${id}`;
     con.query(sql, (err, result) => {
-      if (err) console.error( err);
+      if (err) console.error(err);
       res.json(result);
     });
   });
-})
+});
 
-router.delete("/:id", (req,res) => {
+router.delete("/:id", (req, res) => {
   req.getConnection((error, con) => {
-    if(error) console.error( error)
-    const {id} = req.params
-    sql =  `DELETE FROM eventos WHERE ${id}`;
+    if (error) console.error(error);
+    const { id } = req.params;
+    sql = `DELETE FROM eventos WHERE ${id}`;
     con.query(sql, (err, result) => {
-      if(err) console.error( err )
-      res.sendStatus(204)
-    })   
-  })
+      if (err) console.error(err);
+      res.sendStatus(204);
+    });
+  });
 });
 module.exports = router;

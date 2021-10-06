@@ -7,14 +7,15 @@ router.get("/:id", (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
     const { id } = req.params;
-    sql = `SELECT   p.pil_nombre,
+    sql = `SELECT   p.pil_id,  
+                    p.pil_nombre,
                     p.pil_apellido,
                     p.pil_dni,
                     p.pil_fecNac,
                     p.pil_tel,
                     p.pil_email,
-                    cpr.cpr_nombre,
-                    clo.clo_nombre, 
+                    p.pil_prov,
+                    p.pil_loc,
                     p.pil_dom                 
       FROM pilotos AS p 
       INNER JOIN cat_provincias as cpr ON p.pil_prov = cpr.cpr_id
@@ -22,9 +23,25 @@ router.get("/:id", (req, res) => {
       WHERE p.pil_id =${id}`;
     con.query(sql, (errorq, result) => {
       if (errorq) {
-        console.error(errorq);
+        res.sendStatus("Bad Request");
       } else {
-        res.json(result);
+        if (result[0]) {
+          const piloto = {
+            id: result[0]["pil_id"],
+            nombre: result[0]["pil_nombre"],
+            apellido: result[0]["pil_apellido"],
+            dni: result[0]["pil_dni"],
+            fecNac: result[0]["pil_fecNac"],
+            tel: result[0]["pil_tel"],
+            email: result[0]["pil_email"],
+            prov: result[0]["pil_prov"],
+            loc: result[0]["pil_loc"],
+            dom: result[0]["pil_dom"],
+          };
+          res.send(piloto);
+        } else {
+          res.send("No hay resultados");
+        }
       }
     });
   });
@@ -33,12 +50,28 @@ router.get("/:id", (req, res) => {
 router.get("/", isAuth, (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
-    sql = "SELECT * FROM pilotos";
+    sql = "SELECT * FROM pilotos ;";
     con.query(sql, (errorq, results) => {
       if (errorq) {
         console.error(errorq);
       } else {
-        results ? res.json(results) : res.send("No hay resultados");
+        const pilotos = [];
+        results?.forEach((element) => {
+          const piloto = {
+            id: element["pil_id"],
+            nombre: element["pil_nombre"],
+            apellido: element["pil_apellido"],
+            dni: element["pil_dni"],
+            fecNac: element["pil_fecNac"],
+            tel: element["pil_tel"],
+            email: element["pil_email"],
+            prov: element["pil_prov"],
+            loc: element["pil_loc"],
+            dom: element["pil_dom"],
+          };
+          pilotos.push(piloto);
+        });
+        res.json(pilotos);
       }
     });
   });

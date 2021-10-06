@@ -14,7 +14,9 @@ const eventos = require('./routes/eventos')
 const localidades = require('./routes/localidades')
 const provincias = require('./routes/provincias')
 const tutores = require('./routes/tutores')
+const inscripciones = require('./routes/inscripciones')
 const auth = require('./routes/auth')
+
 
 const app = express()
 /*------ Settings ------*/
@@ -45,6 +47,7 @@ app.use('/api/eventos', eventos)
 app.use('/api/localidades', localidades)
 app.use('/api/provincias', provincias)
 app.use('/api/tutores', tutores)
+app.use('/api/inscripciones', inscripciones)
 
  app.listen(app.get('port'), () => 
  {

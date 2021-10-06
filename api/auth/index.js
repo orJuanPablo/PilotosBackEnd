@@ -23,6 +23,7 @@ const isAuth = (req, res, next) => {
           }
           if (result[0]) {
             const usuario = {
+              id : _id,
               username: result[0].us_username,
               nombre: result[0].us_nombre,
               apellido: result[0].us_apellido,
