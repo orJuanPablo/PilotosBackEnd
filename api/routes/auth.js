@@ -7,7 +7,7 @@ const { isAuth } = require("../auth");
 const router = express.Router();
 
 const signToken = (_id) => {
-  return jwt.sign({ _id }, "orJuanPablo@2021@CoMiD", {
+  return jwt.sign({ _id }, "mi@secreto", {
     expiresIn: 60 * 60 * 24 * 365,
   });
 };

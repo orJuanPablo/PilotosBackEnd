@@ -6,7 +6,7 @@ const isAuth = (req, res, next) => {
   if (!token) {
     return res.sendStatus(403);
   }
-  jwt.verify(token, "orJuanPablo@2021@CoMiD", (err, decoded) => {
+  jwt.verify(token, "mi@secreto", (err, decoded) => {
     if (err) {
       console.error(err);
       res.sendStatus(403);
