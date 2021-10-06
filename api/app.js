@@ -1,4 +1,3 @@
-//const MONGO_URI="mongodb+srv://orJuanPablo-pil:VAWSFmmG%236zbu.%28@riojapilotscluster.ypkix.mongodb.net/RiojaPilotos-DB?retryWrites=true&w=majority"
 
 const express = require('express')
 const mongoose = require('mongoose')

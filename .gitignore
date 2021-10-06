@@ -1,6 +1,7 @@
 .now
 node_modules
-
+/auth
+/routes/auth.js
 # Environment Variables
 .env
 .env.build
