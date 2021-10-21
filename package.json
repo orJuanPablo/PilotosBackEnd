@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "nodemon api/app.js",
-    "start": "node ./api/bin/www"
+    "start": "node ./api/app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
