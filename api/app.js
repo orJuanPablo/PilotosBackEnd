@@ -42,7 +42,7 @@ app.use(
   )
 );
 //----- Rutas ------
-app.use("/", landing);
+//app.use("/", landing);
 app.use("/api/auth", auth);
 app.use("/api/accidentes", accidentes);
 app.use("/api/pilotos", pilotos);
