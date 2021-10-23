@@ -60,6 +60,7 @@ router.get("/", (req, res) => {
               id: result["evt_id"],
               fecha: result["evt_fec"],
               tipoId: result["evt_tipo"],
+              pista: result["evt_pista_desc"],
               tipo: result["cet_nombre"],
               estado: result["evt_estado"],
               provId: result["evt_prov"],

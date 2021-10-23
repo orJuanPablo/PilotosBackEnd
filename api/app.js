@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 
+const landing = require("./routes/landing");
 const accidentes = require("./routes/accidentes");
 const pilotos = require("./routes/pilotos");
 const eventos = require("./routes/eventos");
