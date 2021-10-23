@@ -34,14 +34,15 @@ app.use(
       host: process.env.hostDB || "localhost",
       user: process.env.userDB || "root",
       password: process.env.passDB || "",
-      port: process.env.portDB|| 3306,
-      database: process.env.nameDB||"comid-db",
+      port: process.env.portDB || 3306,
+      database: process.env.nameDB || "comid-db",
       dateStrings: true,
     },
     "single"
   )
 );
 //----- Rutas ------
+app.use("/", landing);
 app.use("/api/auth", auth);
 app.use("/api/accidentes", accidentes);
 app.use("/api/pilotos", pilotos);

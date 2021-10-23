@@ -9,7 +9,8 @@ router.get("/:id", isAuth, (req, res) => {
     sql = `SELECT   i.*, 
                     p.pil_nombre,
                     p.pil_apellido,
-                    p.pil_dni
+                    p.pil_dni,
+                    p.pil_fecNac
       FROM inscripciones i 
       INNER JOIN pilotos AS p ON i.ins_pil = p.pil_id
       WHERE i.ins_evt =${id}`;
@@ -24,7 +25,8 @@ router.get("/:id", isAuth, (req, res) => {
             id: piloto["pil_id"],
             nombre: piloto["pil_nombre"],
             apellido: piloto["pil_apellido"],
-            dni: piloto["pil_dni"]
+            dni: piloto["pil_dni"],
+            fecNac : piloto["pil_fecNac"]
           };
           inscriptos.push(inscripto);
         });
