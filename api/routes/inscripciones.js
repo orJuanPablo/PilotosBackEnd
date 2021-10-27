@@ -7,7 +7,7 @@ router.get("/:id", isAuth, (req, res) => {
     if (error) console.error(error);
     const { id } = req.params;
     sql = `SELECT   i.*, 
-                    p,pil_id,
+                    p.pil_id,
                     p.pil_nombre,
                     p.pil_apellido,
                     p.pil_dni,
