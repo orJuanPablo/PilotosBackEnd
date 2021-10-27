@@ -7,6 +7,7 @@ router.get("/:id", isAuth, (req, res) => {
     if (error) console.error(error);
     const { id } = req.params;
     sql = `SELECT   i.*, 
+                    p,pil_id,
                     p.pil_nombre,
                     p.pil_apellido,
                     p.pil_dni,
@@ -22,7 +23,9 @@ router.get("/:id", isAuth, (req, res) => {
         const inscriptos = [];
         results?.forEach((piloto) => {
           const inscripto = {
-            id: piloto["pil_id"],
+            idI: piloto["ins_id"],
+            idE: piloto["ins_evt"],
+            idP: piloto["pil_id"],
             nombre: piloto["pil_nombre"],
             apellido: piloto["pil_apellido"],
             dni: piloto["pil_dni"],
