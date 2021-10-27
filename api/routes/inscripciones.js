@@ -52,6 +52,8 @@ router.get("/", isAuth, (req, res) => {
 router.post("/", isAuth, (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
+    lfe = `SELECT COUNT(*) FROM inscripciones WHERE ins_evt=${req.body.ins_evt} AND ins_pil='${req.body.ins_pil}';`;
+    //TODO Verificar que el piloto no esté inscripto en el evento
     sql = `INSERT INTO inscripciones(ins_evt, ins_pil, ins_us) 
             VALUES (${req.body.ins_evt}, '${req.body.ins_pil}', ${req.usuario.id})`;
     con.query(sql, (err, result) => {
