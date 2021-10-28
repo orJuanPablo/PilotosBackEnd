@@ -84,6 +84,7 @@ router.post("/", (req, res) => {
             VALUES (${req.body.tipo}, '${req.body.fecha}', ${req.body.prov}, ${req.body.loc}, ${req.body.estado},${req.body.pista})`;
     con.query(sql, (err, result) => {
       if (err) {
+        console.error(err);
         res.sendStatus(400);
       } else {
         res.json(result);
