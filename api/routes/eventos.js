@@ -80,8 +80,8 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   req.getConnection((error, con) => {
     if (error) console.error(error);
-    sql = `INSERT INTO eventos(evt_tipo, evt_fec, evt_prov, evt_loc, estado) 
-            VALUES (${req.body.tipo}, '${req.body.fecha}', ${req.body.prov}, ${req.body.loc}, ${req.body.estado})`;
+    sql = `INSERT INTO eventos(evt_tipo, evt_fec, evt_prov, evt_loc, estado, evt_pista_desc) 
+            VALUES (${req.body.tipo}, '${req.body.fecha}', ${req.body.prov}, ${req.body.loc}, ${req.body.estado},${req.body.pista})`;
     con.query(sql, (err, result) => {
       if (err) {
         res.sendStatus(400);
